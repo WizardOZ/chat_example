@@ -54,14 +54,66 @@
       #messages > li:nth-child(odd) {
         background: #efefef;
       }
+
+      /* Dropdown styles */
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropbtn {
+        background-color: #333;
+        color: white;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        height: 32px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        width: 100%;
+        box-shadow: 0 -8px 16px 0 rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        bottom: 100%;
+      }
+
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .dropdown:hover .dropbtn {
+        background-color: #555;
+      }
     </style>
   </head>
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
+      <input id="input" autocomplete="off" />
+      <button>Send</button>
+      <div class="dropdown">
+        <button class="dropbtn">Menu</button>
+        <div class="dropdown-content">
+          <a id="logout-btn">Finalizar Sesión</a>
+        </div>
+      </div>
     </form>
-    <button id="logout-btn">Finalizar Sesión</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       let counter = 0;
