@@ -23,16 +23,6 @@
         box-sizing: border-box;
         backdrop-filter: blur(10px);
       }
-      #input {
-        border: none;
-        padding: 0 1rem;
-        flex-grow: 1;
-        border-radius: 2rem;
-        margin: 0.25rem;
-      }
-      #input:focus {
-        outline: none;
-      }
       #form > button {
         background: #333;
         border: none;
@@ -54,7 +44,16 @@
       #messages > li:nth-child(odd) {
         background: #efefef;
       }
-
+      #input {
+        border: none;
+        padding: 0 3rem 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      #input:focus {
+        outline: none;
+      }
       /* Dropdown styles */
       .dropdown {
         position: relative;
@@ -108,12 +107,17 @@
       <div class="dropdown">
         <button class="dropbtn">Menu</button>
         <div class="dropdown-content">
-          <a id="reconnect-btn">Reconectar</a>
-          <a id="logout-btn">Finalizar Sesión</a>
+          <a id="clear-chat-btn">Clear Chat</a>
+          <a id="reconnect-btn">Reconnect</a>
+          <a id="logout-btn">Disconnect Chat</a>
         </div>
       </div>
-      <input id="input" autocomplete="off" />
-      <button>Send</button>
+      <input
+        id="input"
+        autocomplete="off"
+        placeholder="Escribe tu mensaje..."
+      />
+      <button id="sendBtn">Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -145,10 +149,15 @@
         const reconnectBtn = document.getElementById("reconnect-btn");
         logoutBtn.addEventListener("click", () => {
           socket.emit("logout"); // Envía un evento al servidor para finalizar la sesión
+          // Cambiar el color de fondo del botón 'Send' cuando se hace clic en 'Disconnect'
+          sendBtn.style.background = "grey";
         });
         reconnectBtn.addEventListener("click", () => {
           location.reload(); // Recarga la página para reconectar y reiniciar la sesión
+          // Cambiar el color de fondo del botón 'Send' cuando se hace clic en 'Reconnect'
+          sendBtn.style.background = "#333";
         });
+
         // Función para agregar un mensaje al chat
         function addMessage(msg) {
           const item = document.createElement("li");
@@ -172,6 +181,12 @@
             input.value = ""; // Limpia el campo de entrada
           }
         });
+        // Maneja el clic en el botón "Borrar Chat"
+        document
+          .getElementById("clear-chat-btn")
+          .addEventListener("click", () => {
+            messages.innerHTML = ""; // Elimina todos los mensajes del chat
+          });
       });
     </script>
   </body>
