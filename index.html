@@ -140,13 +140,6 @@
         }
       });
 
-      socket.on("chat message", (msg, serverOffset) => {
-        const item = document.createElement("li");
-        item.textContent = msg;
-        messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
-        socket.auth.serverOffset = serverOffset;
-      });
       document.addEventListener("DOMContentLoaded", () => {
         const logoutBtn = document.getElementById("logout-btn");
         const reconnectBtn = document.getElementById("reconnect-btn");
@@ -155,6 +148,29 @@
         });
         reconnectBtn.addEventListener("click", () => {
           location.reload(); // Recarga la página para reconectar y reiniciar la sesión
+        });
+        // Función para agregar un mensaje al chat
+        function addMessage(msg) {
+          const item = document.createElement("li");
+          const now = new Date().toLocaleString(); // Obtiene la hora local
+          item.textContent = `[${now}]: ${msg} `; // Agrega la hora y el servidor al mensaje
+          messages.appendChild(item);
+          window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        // Escucha el evento 'chat message' del servidor y agrega el mensaje al chat
+        socket.on("chat message", addMessage);
+
+        // Maneja el envío del formulario para enviar un mensaje
+        document.getElementById("form").addEventListener("submit", (e) => {
+          e.preventDefault();
+          const input = document.getElementById("input");
+          const message = input.value.trim();
+          if (message !== "") {
+            socket.emit("chat message", message); // Envía el mensaje al servidor
+            addMessage(message); // Agrega el mensaje al chat localmente
+            input.value = ""; // Limpia el campo de entrada
+          }
         });
       });
     </script>
