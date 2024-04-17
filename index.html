@@ -76,7 +76,7 @@
         display: none;
         position: absolute;
         background-color: #f9f9f9;
-        width: 100%;
+        width: 120px;
         box-shadow: 0 -8px 16px 0 rgba(0, 0, 0, 0.2);
         z-index: 1;
         bottom: 100%;
@@ -105,14 +105,15 @@
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
-      <input id="input" autocomplete="off" />
-      <button>Send</button>
       <div class="dropdown">
         <button class="dropbtn">Menu</button>
         <div class="dropdown-content">
+          <a id="reconnect-btn">Reconectar</a>
           <a id="logout-btn">Finalizar Sesión</a>
         </div>
       </div>
+      <input id="input" autocomplete="off" />
+      <button>Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -148,8 +149,12 @@
       });
       document.addEventListener("DOMContentLoaded", () => {
         const logoutBtn = document.getElementById("logout-btn");
+        const reconnectBtn = document.getElementById("reconnect-btn");
         logoutBtn.addEventListener("click", () => {
           socket.emit("logout"); // Envía un evento al servidor para finalizar la sesión
+        });
+        reconnectBtn.addEventListener("click", () => {
+          location.reload(); // Recarga la página para reconectar y reiniciar la sesión
         });
       });
     </script>
